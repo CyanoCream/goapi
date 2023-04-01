@@ -75,7 +75,7 @@ func (h HttpServer) UpdateBook(c *gin.Context) {
 
 	bookRequest.ID = id
 
-	_, err = h.app.CreateBook(bookRequest)
+	_, err = h.app.UpdateBook(bookRequest)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

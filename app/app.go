@@ -2,19 +2,25 @@ package app
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"os"
 	"sesi_8/config"
+	"sesi_8/model"
 	"sesi_8/repository"
 	"sesi_8/route"
 	"sesi_8/service"
-
-	"github.com/gin-gonic/gin"
 )
 
 var router = gin.New()
 
 func StartApplication() {
-	repo := repository.NewRepo(config.PSQL.DB)
+	db := config.PSQL.DB
+	err := db.AutoMigrate(&model.Books{})
+	if err != nil {
+		panic(err)
+	}
+
+	repo := repository.NewRepo(db)
 	app := service.NewService(repo)
 	route.RegisterApi(router, app)
 

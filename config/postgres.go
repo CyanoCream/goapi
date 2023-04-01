@@ -1,11 +1,11 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Postgres struct {
@@ -17,7 +17,7 @@ type Postgres struct {
 	Database string
 
 	// db connection
-	DB *sql.DB
+	DB *gorm.DB
 }
 
 type PsqlDb struct {
@@ -45,7 +45,7 @@ func InitPostgres() error {
 		return err
 	}
 
-	err = PSQL.DB.Ping()
+	err = PSQL.DB.Raw("SELECT 1").Error
 	if err != nil {
 		return err
 	}
@@ -57,18 +57,15 @@ func (p *Postgres) OpenConnection() error {
 	// init dsn
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", p.Address, p.Port, p.Username, p.Password, p.Database)
 
-	dbConnection, err := sql.Open("postgres", dsn)
+	dbConnection, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{})
 	if err != nil {
 		return err
 	}
 
 	p.DB = dbConnection
-
-	// test connection
-	err = p.DB.Ping()
-	if err != nil {
-		return err
-	}
 
 	fmt.Println("Successfully connected to database")
 
