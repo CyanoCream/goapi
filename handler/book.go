@@ -56,7 +56,9 @@ func (h HttpServer) GetBook(c *gin.Context) {
 
 	book, err := h.app.GetBook(id)
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": "Book tidak ditemukan",
+		})
 		return
 	}
 
