@@ -26,7 +26,14 @@ func (h HttpServer) CreateBook(c *gin.Context) {
 		"status": "Created",
 	})
 }
-
+// @Summary Get a list of books
+// @Description Get a list of books
+// @ID get-books
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} []Books
+// @Failure 400 {object} ErrorResponse
+// @Router /book [get]
 func (h HttpServer) GetBooks(c *gin.Context) {
 	books, err := h.app.GetBooks()
 	if err != nil {
@@ -100,6 +107,6 @@ func (h HttpServer) DeleteBook(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Deleted",
+		"message": "Book Delete Succesfully",
 	})
 }
