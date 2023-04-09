@@ -1,18 +1,18 @@
 package models
 
 import (
-"github.com/Digisata/dts-hactiv8-golang-chap3/helpers"
+	"challenge-08/helpers"
 
-"github.com/asaskevich/govalidator"
-"gorm.io/gorm"
+	"github.com/asaskevich/govalidator"
+	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
+	GORMModel
 	FirstName string    `gorm:"not null" json:"first_name" validate:"required-First name is required"`
 	Email     string    `gorm:"not null;uniqueIndex" json:"email" validate:"required-Email is required,email-Invalid email format"`
 	Password  string    `gorm:"not null" json:"password" validate:"required-Password is required,MinStringLength(6)-Password has to have a minimum length of 6 characters"`
-	Role      string    `gorm:"not null" json:"role" validate:"required-Role is required"`
+	IsAdmin   bool      `gorm:"not null;default:false" json:"is_admin"`
 	Products  []Product `json:"products"`
 }
 
@@ -26,8 +26,8 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	if err != nil {
 		return
 	}
+
 	u.Password = hashedPass
 
 	return
 }
-

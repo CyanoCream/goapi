@@ -1,12 +1,11 @@
 package controllers
 
 import (
+	"challenge-08/database"
+	"challenge-08/helpers"
+	"challenge-08/models"
 	"errors"
 	"net/http"
-
-	"tugas2/database"
-	"tugas2/helpers"
-	"tugas2/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,7 +33,7 @@ func RegisterUser(ctx *gin.Context) {
 		"id":         user.ID,
 		"first_name": user.FirstName,
 		"email":      user.Email,
-		"role":       user.Role,
+		"isAdmin":    user.IsAdmin,
 	})
 }
 
@@ -61,7 +60,7 @@ func LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	token, err := helpers.GenerateToken(user.ID, user.Email, user.Role)
+	token, err := helpers.GenerateToken(user.ID, user.Email, user.IsAdmin)
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return

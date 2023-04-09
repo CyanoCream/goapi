@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -10,11 +11,11 @@ import (
 
 const secretKey = "t3StS3cR3t!"
 
-func GenerateToken(id uint, email, role string) (token string, err error) {
+func GenerateToken(id uint, email string, isAdmin bool) (token string, err error) {
 	claims := jwt.MapClaims{
-		"id":    id,
-		"email": email,
-		"role": role,
+		"id":      id,
+		"email":   email,
+		"isAdmin": isAdmin,
 	}
 
 	parseToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -32,6 +33,7 @@ func VerifyToken(ctx *gin.Context) (interface{}, error) {
 	}
 
 	stringToken := headerToken[7:]
+	fmt.Println(stringToken)
 
 	token, err := jwt.Parse(stringToken, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
