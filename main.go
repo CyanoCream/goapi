@@ -2,7 +2,6 @@ package main
 
 import (
 	"tugas2/database"
-	"tugas2/router"
 )
 
 func main() {
