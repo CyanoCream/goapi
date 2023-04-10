@@ -2,18 +2,18 @@ package repository
 
 import (
 	"fmt"
-	"sesi_8/model"
+
 )
 
 type BookRepo interface {
-	CreateBook(book model.Books) (model.Books, error)
+	CreateBook(book mode) (model.Books, error)
 	GetBooks() ([]model.Books, error)
 	GetBook(id int) (model.Books, error)
 	UpdateBook(book model.Books) (model.Books, error)
 	DeleteBook(id int) error
 }
 
-func (r Repo) CreateBook(book model.Books) (model.Books, error) {
+func (r BookRepo) CreateBook(book model.Books) (model.Books, error) {
 	newBook := model.Books{}
 	result := r.db.Create(&book)
 	if result.Error != nil {
