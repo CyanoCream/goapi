@@ -32,11 +32,11 @@ func InitPostgres() error {
 	PSQL = new(PsqlDb)
 
 	PSQL.Postgres = &Postgres{
-		Username: os.Getenv("POSTGRES_USER"),
-		Password: os.Getenv("POSTGRES_PASSWORD"),
-		Port:     os.Getenv("POSTGRES_PORT"),
-		Address:  os.Getenv("POSTGRES_ADDRESS"),
-		Database: os.Getenv("POSTGRES_DB"),
+		Username: os.Getenv("PGUSER"),
+		Password: os.Getenv("PGPASSWORD"),
+		Port:     os.Getenv("PGPORT"),
+		Address:  os.Getenv("DATABASE_URL"),
+		Database: os.Getenv("PGDATABASE"),
 	}
 
 	// connect to database
